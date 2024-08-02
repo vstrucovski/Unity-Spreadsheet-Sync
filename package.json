@@ -1,11 +1,11 @@
 {
   "name": "strukovski.unity.spreadsheetsync",
   "displayName": "Unity-SpreadsheetSync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2022.2",
   "description": "GD module",
   "dependencies": {
-    "com.dbrizov.naughtyattributes": "2.1.4"
+    
   },
   "keywords": [
     "script"
