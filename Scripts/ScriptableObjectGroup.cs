@@ -17,7 +17,7 @@ namespace UnitySpreadsheetSync.Scripts
 
         public T Get(int index)
         {
-            return _list[index];
+            return _list[Mathf.Clamp(index, 0, _list.Count - 1)];
         }
 
 #if UNITY_EDITOR
