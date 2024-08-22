@@ -6,6 +6,7 @@ namespace UnitySpreadsheetSync.Editor
 {
     public static class AssetUtility
     {
+#if UNITY_EDITOR
         public static ScriptableObject AddSubAsset(ScriptableObject subAsset, ScriptableObject parentAsset)
         {
             if (subAsset == null || parentAsset == null)
@@ -23,12 +24,14 @@ namespace UnitySpreadsheetSync.Editor
                 newSubAsset = Object.Instantiate(subAsset);
                 newSubAsset.name = subAsset.name;
             }
+
             if (!AssetDatabase.Contains(newSubAsset))
             {
                 AssetDatabase.AddObjectToAsset(newSubAsset, parentAsset);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
+
             if (!string.IsNullOrEmpty(currentParentPath) && currentParentPath != parentAssetPath)
             {
                 AssetDatabase.DeleteAsset(currentParentPath);
@@ -37,6 +40,7 @@ namespace UnitySpreadsheetSync.Editor
 
             return newSubAsset;
         }
+
         public static void RemoveSubAsset(ScriptableObject subAsset)
         {
             if (subAsset == null)
@@ -62,5 +66,6 @@ namespace UnitySpreadsheetSync.Editor
                 Debug.LogWarning("Sub-asset does not belong to any asset.");
             }
         }
+#endif
     }
 }
