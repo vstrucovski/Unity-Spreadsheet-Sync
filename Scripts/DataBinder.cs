@@ -54,5 +54,17 @@ namespace DefaultNamespace
                 }
             }
         }
+        
+        private static float ParseFloat(string value)
+        {
+            float result = -1;
+            if (!float.TryParse(value, System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.GetCultureInfo("en-US"), out result))
+            {
+                Debug.Log("Can't pars float, wrong text");
+            }
+
+            return result;
+        }
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601652b9c61a428e9d02591274bddd1b, type: 3}
   m_Name: SpearAnt_1
   m_EditorClassIdentifier: 
-  <id>k__BackingField: spearant_1
-  health: 30
-  attack: 10
+  <id>k__BackingField: spear_ant_1
+  health: 20
+  attack: 5

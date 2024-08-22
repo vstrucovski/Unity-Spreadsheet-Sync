@@ -7,11 +7,13 @@ namespace UnitySpreadsheetSync.Scripts
     public class SpreadsheetSyncer : MonoBehaviour
     {
         [SerializeField] private string sheetId;
+        [SerializeField] private string pageId;
         [SerializeField] private bool autoStart;
         [SerializeField] private List<ScriptableObject> dataToUpdate;
         [SerializeField] private bool debug;
 
-        private const string UrlTemplate = "https://docs.google.com/spreadsheets/d/e/{0}/pub?output=csv";
+        // private const string UrlTemplate = "https://docs.google.com/spreadsheets/d/{0}/pub?output=csv";
+        private const string UrlTemplate = "https://docs.google.com/spreadsheets/d/{0}/pub?gid={1}&single=true&output=csv";
         private IDataDownloader _downloader;
 
         private void Start()
@@ -28,12 +30,12 @@ namespace UnitySpreadsheetSync.Scripts
             _downloader ??= new CsvDataDownloader(); //TODO rework to SO with diff impl
         }
 
-        public string GetUrl() => string.Format(UrlTemplate, sheetId);
+        public string GetUrl() => string.Format(UrlTemplate, sheetId, pageId);
 
         [Button]
         public void Download()
         {
-            Log("Downloading...");
+            Log("Downloading..." + GetUrl());
             Init();
             StartCoroutine(_downloader.Download(GetUrl(),
                 content =>
@@ -50,7 +52,7 @@ namespace UnitySpreadsheetSync.Scripts
             var flattenList = new List<ScriptableObject>();
             foreach (var item in dataToUpdate)
             {
-                if (item is ScriptableObjectGroup group)
+                if (item is IScriptableObjectGroup  group)
                 {
                     flattenList.AddRange(group.List);
                 }

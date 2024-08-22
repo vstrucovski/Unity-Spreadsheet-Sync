@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4751659435219515454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601652b9c61a428e9d02591274bddd1b, type: 3}
+  m_Name: Player_2
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: player_ant_2
+  health: 225
+  attack: 22.34
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1095d32b5c4a8c9ddc306ca117efe6, type: 3}
+  m_Name: PlayerContainer
+  m_EditorClassIdentifier: 
+  _list:
+  - {fileID: 7586401681350722928}
+  - {fileID: -4751659435219515454}
+--- !u!114 &7586401681350722928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601652b9c61a428e9d02591274bddd1b, type: 3}
+  m_Name: Player_1
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: player_ant_1
+  health: 100
+  attack: 11
