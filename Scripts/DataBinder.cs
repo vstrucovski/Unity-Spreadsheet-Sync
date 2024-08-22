@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -16,7 +19,7 @@ namespace DefaultNamespace
                 {
                     var value = data[key];
                     if (string.IsNullOrEmpty(value)) value = "0";
-                    
+
                     if (property.PropertyType == typeof(int))
                     {
                         property.SetValue(target, int.Parse(value));
@@ -33,14 +36,12 @@ namespace DefaultNamespace
                 else
                 {
                     var field = type.GetField(key, BindingFlags.Public | BindingFlags.Instance);
-                    
-                    
-                    
+
                     if (field != null)
                     {
                         var value = data[key];
                         if (string.IsNullOrEmpty(value)) value = "0";
-                        
+
                         if (field.FieldType == typeof(int))
                         {
                             field.SetValue(target, int.Parse(value));
@@ -60,8 +61,15 @@ namespace DefaultNamespace
                     }
                 }
             }
+#if UNITY_EDITOR
+            if (target is ScriptableObject)
+            {
+                EditorUtility.SetDirty((ScriptableObject) target);
+                AssetDatabase.SaveAssets();
+            }
+#endif
         }
-        
+
         private static float ParseFloat(string value)
         {
             float result = -1;
