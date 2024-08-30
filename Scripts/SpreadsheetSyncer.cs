@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -40,6 +41,20 @@ namespace UnitySpreadsheetSync.Scripts
             Log("Downloading..." + GetUrl());
             Init();
             StartCoroutine(_downloader.Download(GetUrl(),
+                content =>
+                {
+                    Log("Success downloaded CSV data");
+                    var page = CsvParser.ParseCsv(content);
+                    Log("Parsed CSV data into page = " + page.Count);
+                    FillContent(page);
+                }, error => { Debug.LogError("Error downloading CSV: " + error); }));
+        }
+
+        public IEnumerator DownloadCoroutine()
+        {
+            Log("Downloading..." + GetUrl());
+            Init();
+            yield return StartCoroutine(_downloader.Download(GetUrl(),
                 content =>
                 {
                     Log("Success downloaded CSV data");
