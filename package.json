@@ -1,11 +1,13 @@
 {
   "name": "strukovski.unity.spreadsheetsync",
   "displayName": "Unity-SpreadsheetSync",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "unity": "2022.2",
   "description": "GD module",
   "dependencies": {
-    
+  },
+  "author": {
+    "name": "Valerii Strukovski"
   },
   "keywords": [
     "script"
