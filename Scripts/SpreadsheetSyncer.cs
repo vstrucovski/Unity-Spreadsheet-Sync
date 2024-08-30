@@ -13,7 +13,9 @@ namespace UnitySpreadsheetSync.Scripts
         [SerializeField] private bool debug;
 
         // private const string UrlTemplate = "https://docs.google.com/spreadsheets/d/{0}/pub?output=csv";
-        private const string UrlTemplate = "https://docs.google.com/spreadsheets/d/{0}/pub?gid={1}&single=true&output=csv";
+        private const string UrlTemplate =
+            "https://docs.google.com/spreadsheets/d/{0}/pub?gid={1}&single=true&output=csv";
+
         private IDataDownloader _downloader;
 
         private void Start()
@@ -52,7 +54,7 @@ namespace UnitySpreadsheetSync.Scripts
             var flattenList = new List<ScriptableObject>();
             foreach (var item in dataToUpdate)
             {
-                if (item is IScriptableObjectGroup  group)
+                if (item is IScriptableObjectGroup group)
                 {
                     flattenList.AddRange(group.List);
                 }
@@ -67,7 +69,14 @@ namespace UnitySpreadsheetSync.Scripts
             {
                 if (item is IDataBindable csvRemote)
                 {
-                    var line = page[csvRemote.id];
+                    var key = csvRemote.id;
+                    if (!page.ContainsKey(key))
+                    {
+                        Log("No remote data for key => " + key);
+                        continue;
+                    }
+
+                    var line = page[key];
                     if (line != null)
                     {
                         csvRemote.Parse(line);
