@@ -69,7 +69,7 @@ namespace UnitySpreadsheetSync.Scripts
         [Button]
         public void CreateNewSubAsset()
         {
-            int highestIndex = MaxIndex(subAssetName);
+            int highestIndex = MaxIndex(subAssetName + "_");
 
             string newName = subAssetName + "_" + (highestIndex + 1).ToString("D2");
             T newAsset = CreateInstance<T>();
