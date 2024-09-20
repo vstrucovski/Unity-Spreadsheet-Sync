@@ -10,11 +10,15 @@ using UnitySpreadsheetSync.Editor;
 
 namespace UnitySpreadsheetSync.Scripts
 {
-    public abstract class ScriptableObjectGroup<T> : ScriptableObject, IScriptableObjectGroup where T : ScriptableObject
+    public abstract class ScriptableObjectGroup<T> : ScriptableObject, IScriptableObjectGroup
+        where T : ScriptableObject, IDataBindable
     {
-        [SerializeField, Expandable] private List<T> _list;
+        [SerializeField, Expandable, ReorderableList]
+        private List<T> _list;
 
         public List<ScriptableObject> List => _list.Cast<ScriptableObject>().ToList();
+        [SerializeField] private string subAssetName = "Level";
+        [SerializeField] private string subAssetIds;
 
         public T Get(int index)
         {
@@ -42,6 +46,16 @@ namespace UnitySpreadsheetSync.Scripts
         }
 
         [Button]
+        public void SetMassSubAssetIds()
+        {
+            for (var i = 0; i < _list.Count; i++)
+            {
+                var item = _list[i];
+                item.id = subAssetIds + "_" + (i + 1).ToString("D1");
+            }
+        }
+
+        [Button]
         public void UnlinkSubAssets()
         {
             foreach (var so in List)
@@ -53,28 +67,11 @@ namespace UnitySpreadsheetSync.Scripts
         }
 
         [Button]
-        public void CreateNewSub()
+        public void CreateNewSubAsset()
         {
-            string baseName = "Level_";
-            int highestIndex = 0;
+            int highestIndex = MaxIndex(subAssetName);
 
-            // Search for the highest index in existing sub-assets
-            foreach (var so in List)
-            {
-                if (so != null && so.name.StartsWith(baseName))
-                {
-                    var suffix = so.name.Substring(baseName.Length);
-                    if (int.TryParse(suffix, out int index))
-                    {
-                        if (index > highestIndex)
-                        {
-                            highestIndex = index;
-                        }
-                    }
-                }
-            }
-
-            string newName = baseName + (highestIndex + 1).ToString("D2");
+            string newName = subAssetName + "_" + (highestIndex + 1).ToString("D2");
             T newAsset = CreateInstance<T>();
             newAsset.name = newName;
             AssetDatabase.AddObjectToAsset(newAsset, this);
@@ -84,6 +81,56 @@ namespace UnitySpreadsheetSync.Scripts
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+        }
+
+        private int MaxIndex(string baseName)
+        {
+            var highestIndex = 0;
+            foreach (var so in List)
+            {
+                if (so != null && so.name.StartsWith(baseName))
+                {
+                    var suffix = so.name.Substring(baseName.Length);
+                    if (int.TryParse(suffix, out var index))
+                    {
+                        if (index > highestIndex)
+                        {
+                            highestIndex = index;
+                        }
+                    }
+                }
+            }
+
+            return highestIndex;
+        }
+
+        [Button]
+        public void RemoveLastSubAsset()
+        {
+            if (_list.Count > 0)
+            {
+                T lastSubAsset = _list[^1];
+                _list.RemoveAt(_list.Count - 1);
+                string assetPath = AssetDatabase.GetAssetPath(this);
+                AssetDatabase.RemoveObjectFromAsset(lastSubAsset);
+                DestroyImmediate(lastSubAsset, true);
+                EditorUtility.SetDirty(this);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                string subAssetPath = AssetDatabase.GetAssetPath(lastSubAsset);
+                if (!string.IsNullOrEmpty(subAssetPath) && subAssetPath != assetPath)
+                {
+                    AssetDatabase.DeleteAsset(subAssetPath);
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            else
+            {
+                Debug.LogWarning("No sub-assets to remove.");
+            }
         }
 #endif
     }
