@@ -1,9 +1,16 @@
 This package is used to download game balance data from a Google Spreadsheet and update local configurations.
 
 ### 📦 How to install
-1. Open Unity Package Manager
-2. Add package via git URL
-- https://github.com/vstrucovski/Unity-Spreadsheet-Sync.git
+1. Require [Git](https://git-scm.com/) for installing package.
+2. Open Unity Package Manager
+3. Add package via git URL 
+```
+    https://github.com/vstrucovski/Unity-Spreadsheet-Sync.git
+```
+OR add directly to manifest
+```
+"com.strukovski.spreadsheetsync": "https://github.com/vstrucovski/Unity-Spreadsheet-Sync.git"
+```
 
 # 🧾 How to use
 1. Add the SpreadsheetSyncer component to a scene
