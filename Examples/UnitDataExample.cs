@@ -1,5 +1,4 @@
-﻿using DefaultNamespace;
-using UnityEngine;
+﻿using UnityEngine;
 using UnitySpreadsheetSync.Scripts;
 
 namespace UnitySpreadsheetSync.Examples

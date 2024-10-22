@@ -1,70 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using UnityEngine;
+#if UNITY_EDITOR
+#endif
 
-namespace DefaultNamespace
+namespace UnitySpreadsheetSync.Scripts
 {
-    public class DataBinder
+    public static class DataBinder
     {
+        private const NumberStyles numberStyle = NumberStyles.Any;
+
         public static void Bind(object target, Dictionary<string, string> data)
         {
             var type = target.GetType();
+            var cultureInfo = CultureInfo.GetCultureInfo("en-US");
             foreach (var key in data.Keys)
             {
                 var property = type.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
                 if (property != null)
                 {
-                    var value = data[key];
-                    if (string.IsNullOrEmpty(value)) value = "0";
-
-                    if (property.PropertyType == typeof(int))
-                    {
-                        property.SetValue(target, int.Parse(value));
-                    }
-                    else if (property.PropertyType == typeof(float))
-                    {
-                        property.SetValue(target, float.Parse(value));
-                    }
-                    else if (property.PropertyType == typeof(string))
-                    {
-                        property.SetValue(target, value);
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        var enumValue = Enum.Parse(property.PropertyType, value);
-                        property.SetValue(target, enumValue);
-                    }
+                    ParseProperty(target, data, key, property, cultureInfo);
                 }
                 else
                 {
                     var field = type.GetField(key, BindingFlags.Public | BindingFlags.Instance);
-
                     if (field != null)
                     {
-                        var value = data[key];
-                        if (string.IsNullOrEmpty(value)) value = "0";
-
-                        if (field.FieldType == typeof(int))
-                        {
-                            field.SetValue(target, int.Parse(value));
-                        }
-                        else if (field.FieldType == typeof(float))
-                        {
-                            field.SetValue(target, float.Parse(value));
-                        }
-                        else if (field.FieldType == typeof(string))
-                        {
-                            field.SetValue(target, value);
-                        }
-                        else if (field.FieldType.IsEnum)
-                        {
-                            var enumValue = Enum.Parse(field.FieldType, value);
-                            field.SetValue(target, enumValue);
-                        }
+                        ParseField(target, data, key, field, cultureInfo);
                     }
                     else
                     {
@@ -73,24 +38,78 @@ namespace DefaultNamespace
                 }
             }
 #if UNITY_EDITOR
-            if (target is ScriptableObject)
+            if (target is ScriptableObject scriptableObject)
             {
-                EditorUtility.SetDirty((ScriptableObject) target);
+                EditorUtility.SetDirty(scriptableObject);
                 AssetDatabase.SaveAssets();
             }
 #endif
         }
 
-        private static float ParseFloat(string value)
+        private static void ParseField(object target, IReadOnlyDictionary<string, string> data, string key,
+            FieldInfo field, CultureInfo cultureInfo)
         {
-            float result = -1;
-            if (!float.TryParse(value, System.Globalization.NumberStyles.Any,
-                    System.Globalization.CultureInfo.GetCultureInfo("en-US"), out result))
-            {
-                Debug.Log("Can't pars float, wrong text");
-            }
+            var value = data[key];
+            if (string.IsNullOrEmpty(value)) value = "0";
 
-            return result;
+            if (field.FieldType == typeof(int))
+            {
+                if (int.TryParse(value, numberStyle, cultureInfo, out var parsed))
+                {
+                    field.SetValue(target, parsed);
+                }
+            }
+            else if (field.FieldType == typeof(float))
+            {
+                if (float.TryParse(value, numberStyle, cultureInfo, out var parsed))
+                {
+                    field.SetValue(target, parsed);
+                }
+            }
+            else if (field.FieldType == typeof(string))
+            {
+                field.SetValue(target, value);
+            }
+            else if (field.FieldType.IsEnum)
+            {
+                if (Enum.TryParse(field.FieldType, value, out var parsed))
+                {
+                    field.SetValue(target, parsed);
+                }
+            }
+        }
+
+        private static void ParseProperty(object target, IReadOnlyDictionary<string, string> data, string key,
+            PropertyInfo property, CultureInfo cultureInfo)
+        {
+            var value = data[key];
+            if (string.IsNullOrEmpty(value)) value = "0";
+
+            if (property.PropertyType == typeof(int))
+            {
+                if (int.TryParse(value, numberStyle, cultureInfo, out var parsed))
+                {
+                    property.SetValue(target, parsed);
+                }
+            }
+            else if (property.PropertyType == typeof(float))
+            {
+                if (float.TryParse(value, numberStyle, cultureInfo, out var parsed))
+                {
+                    property.SetValue(target, parsed);
+                }
+            }
+            else if (property.PropertyType == typeof(string))
+            {
+                property.SetValue(target, value);
+            }
+            else if (property.PropertyType.IsEnum)
+            {
+                if (Enum.TryParse(property.PropertyType, value, out var parsed))
+                {
+                    property.SetValue(target, parsed);
+                }
+            }
         }
     }
 }
