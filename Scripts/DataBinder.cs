@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -32,6 +33,11 @@ namespace DefaultNamespace
                     {
                         property.SetValue(target, value);
                     }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var enumValue = Enum.Parse(property.PropertyType, value);
+                        property.SetValue(target, enumValue);
+                    }
                 }
                 else
                 {
@@ -53,6 +59,11 @@ namespace DefaultNamespace
                         else if (field.FieldType == typeof(string))
                         {
                             field.SetValue(target, value);
+                        }
+                        else if (field.FieldType.IsEnum)
+                        {
+                            var enumValue = Enum.Parse(field.FieldType, value);
+                            field.SetValue(target, enumValue);
                         }
                     }
                     else
