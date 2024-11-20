@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace UnitySpreadsheetSync.Scripts
+namespace UnitySpreadsheetSync.Scripts.Parser
 {
     public static class CsvParser
     {

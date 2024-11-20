@@ -49,3 +49,6 @@ Tag your ScriptableObject with interface IDataBindable and implement Parse()
     }
 ```
 
+### 4️⃣ Auto fetching
+To automatically populate a group of ScriptableObjects with data from a spreadsheet, extend the ScriptableObjectTypedGroup class, as demonstrated in Example 3. <br>Additionally, ensure the "Is Single Type" checkbox is enabled on the SpreadsheetSyncer component.  
+![img.png](Documentation/autoFetchGroup.png)

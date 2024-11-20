@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UnitySpreadsheetSync.Scripts
+namespace UnitySpreadsheetSync.Scripts.Parser
 {
     public class SpreadsheetLine : Dictionary<string, string>
     {

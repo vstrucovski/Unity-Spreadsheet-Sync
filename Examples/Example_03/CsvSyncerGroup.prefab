@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3426652984603841791
+--- !u!1 &5789298863590241502
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4577749728739561248}
-  - component: {fileID: 1455083982368927417}
+  - component: {fileID: 1043678290340764369}
+  - component: {fileID: 8535257649138016520}
   m_Layer: 0
-  m_Name: CsvSyncerTestTypes
+  m_Name: CsvSyncerGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4577749728739561248
+--- !u!4 &1043678290340764369
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3426652984603841791}
+  m_GameObject: {fileID: 5789298863590241502}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.0881822, y: 1.2872527, z: 0.024138726}
@@ -32,23 +32,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1455083982368927417
+--- !u!114 &8535257649138016520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3426652984603841791}
+  m_GameObject: {fileID: 5789298863590241502}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a21017ceb5ec4e2387e18a99271156f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sheetId: 13jiPQsbwsnWQRMV82LIFm6haMz0EP4gYez-MedhZtaU
-  pageId: 35146312
+  pageId: 1361693036
   autoStart: 0
-  dataToUpdate:
-  - {fileID: 11400000, guid: 6810aba0bf1a94543b0c443161be6080, type: 2}
-  - {fileID: 11400000, guid: c6ea280f3153ecb41951d0d8fab97383, type: 2}
-  - {fileID: 11400000, guid: 8b95d4b057386dd48bc5e222ad3d3094, type: 2}
-  debug: 1
+  isSingleType: 1
+  dataToUpdate: []
+  dataToUpdateGroup: {fileID: 11400000, guid: fb3d5bcbb432bef4b87fe41b79b5571d, type: 2}
+  debug: 0

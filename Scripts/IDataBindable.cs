@@ -1,4 +1,6 @@
-﻿namespace UnitySpreadsheetSync.Scripts
+﻿using UnitySpreadsheetSync.Scripts.Parser;
+
+namespace UnitySpreadsheetSync.Scripts
 {
     public interface IDataBindable
     {

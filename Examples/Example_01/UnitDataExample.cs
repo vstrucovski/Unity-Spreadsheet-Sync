@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnitySpreadsheetSync.Scripts;
+using UnitySpreadsheetSync.Scripts.Parser;
 
-namespace UnitySpreadsheetSync.Examples
+namespace UnitySpreadsheetSync.Examples.Example_01
 {
-    [CreateAssetMenu(menuName = "Example/UnitData")]
+    [CreateAssetMenu(menuName = "CSVSync/Example/Unit Data (1)")]
     public class UnitDataExample : ScriptableObject, IDataBindable
     {
         [field: SerializeField] public string id { get; set; } //first column

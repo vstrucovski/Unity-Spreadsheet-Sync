@@ -47,7 +47,7 @@ namespace UnitySpreadsheetSync.Scripts
         }
 
         private static void ParseField(object target, IReadOnlyDictionary<string, string> data, string key,
-            FieldInfo field, CultureInfo cultureInfo)
+            FieldInfo field, IFormatProvider cultureInfo)
         {
             var value = data[key];
             if (string.IsNullOrEmpty(value)) value = "0";
@@ -80,7 +80,7 @@ namespace UnitySpreadsheetSync.Scripts
         }
 
         private static void ParseProperty(object target, IReadOnlyDictionary<string, string> data, string key,
-            PropertyInfo property, CultureInfo cultureInfo)
+            PropertyInfo property, IFormatProvider cultureInfo)
         {
             var value = data[key];
             if (string.IsNullOrEmpty(value)) value = "0";

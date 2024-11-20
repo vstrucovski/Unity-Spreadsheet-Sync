@@ -3,71 +3,21 @@ using System.Linq;
 using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnitySpreadsheetSync.Editor;
-#endif
 
-
-namespace UnitySpreadsheetSync.Scripts
+namespace UnitySpreadsheetSync.Scripts.Data
 {
-    public abstract class ScriptableObjectGroup<T> : ScriptableObject, IScriptableObjectGroup
+    public class ScriptableObjectTypedGroup<T> : ScriptableObject, IScriptableObjectTypedGroup
         where T : ScriptableObject, IDataBindable
     {
         [SerializeField, Expandable, ReorderableList]
         private List<T> _list;
 
         public List<ScriptableObject> List => _list.Cast<ScriptableObject>().ToList();
+
         [SerializeField] private string subAssetName = "Level";
-        [SerializeField] private string subAssetIds;
-
-        public T Get(int index)
-        {
-            return _list[Mathf.Clamp(index, 0, _list.Count - 1)];
-        }
-
-        public void Add(T value)
-        {
-            _list.Add(value);
-        }
-
-#if UNITY_EDITOR
-        [Button]
-        public void ConvertToSubAssets()
-        {
-            var newList = new List<T>();
-            foreach (var so in List)
-            {
-                var newSo = AssetUtility.AddSubAsset(so, this);
-                newList.Add((T) newSo);
-            }
-
-            _list.Clear();
-            _list.AddRange(newList); //TODO not adding
-        }
 
         [Button]
-        public void SetMassSubAssetIds()
-        {
-            for (var i = 0; i < _list.Count; i++)
-            {
-                var item = _list[i];
-                item.id = subAssetIds + "_" + (i + 1).ToString("D1");
-            }
-        }
-
-        [Button]
-        public void UnlinkSubAssets()
-        {
-            foreach (var so in List)
-            {
-                AssetUtility.RemoveSubAsset(so);
-            }
-
-            _list.Clear();
-        }
-
-        [Button]
-        public void CreateNewSubAsset()
+        public ScriptableObject CreateSubAsset()
         {
             int highestIndex = MaxIndex(subAssetName + "_");
 
@@ -81,7 +31,10 @@ namespace UnitySpreadsheetSync.Scripts
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            return newAsset;
         }
+
 
         private int MaxIndex(string baseName)
         {
@@ -103,15 +56,15 @@ namespace UnitySpreadsheetSync.Scripts
 
             return highestIndex;
         }
-
+        
         [Button]
-        public void RemoveLastSubAsset()
+        public void RemoveSubAssets()
         {
-            if (_list.Count > 0)
+            while (_list.Count > 0)
             {
-                T lastSubAsset = _list[^1];
+                var lastSubAsset = _list[^1];
                 _list.RemoveAt(_list.Count - 1);
-                string assetPath = AssetDatabase.GetAssetPath(this);
+                var assetPath = AssetDatabase.GetAssetPath(this);
                 AssetDatabase.RemoveObjectFromAsset(lastSubAsset);
                 DestroyImmediate(lastSubAsset, true);
                 EditorUtility.SetDirty(this);
@@ -126,12 +79,7 @@ namespace UnitySpreadsheetSync.Scripts
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-            }
-            else
-            {
-                Debug.LogWarning("No sub-assets to remove.");
-            }
+            } 
         }
-#endif
     }
 }
