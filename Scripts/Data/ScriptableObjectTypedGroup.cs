@@ -17,8 +17,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
         public List<ScriptableObject> List => _list.Cast<ScriptableObject>().ToList();
 
         [SerializeField] private string subAssetName = "Level";
-
-
+        
         [Button]
         public ScriptableObject CreateSubAsset()
         {
@@ -39,7 +38,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
             return newAsset;
         }
 
-#if UNITY_EDITOR
+
         private int MaxIndex(string baseName)
         {
             var highestIndex = 0;
@@ -60,7 +59,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
 
             return highestIndex;
         }
-
+#if UNITY_EDITOR
         [Button]
         public void RemoveSubAssets()
         {
