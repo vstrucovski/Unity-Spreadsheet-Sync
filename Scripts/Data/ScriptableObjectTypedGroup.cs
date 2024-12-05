@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace UnitySpreadsheetSync.Scripts.Data
@@ -16,6 +18,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
 
         [SerializeField] private string subAssetName = "Level";
 
+#if UNITY_EDITOR
         [Button]
         public ScriptableObject CreateSubAsset()
         {
@@ -56,7 +59,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
 
             return highestIndex;
         }
-        
+
         [Button]
         public void RemoveSubAssets()
         {
@@ -79,7 +82,8 @@ namespace UnitySpreadsheetSync.Scripts.Data
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-            } 
+            }
         }
+#endif
     }
 }
