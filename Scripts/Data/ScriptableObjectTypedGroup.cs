@@ -18,7 +18,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
 
         [SerializeField] private string subAssetName = "Level";
 
-#if UNITY_EDITOR
+
         [Button]
         public ScriptableObject CreateSubAsset()
         {
@@ -27,6 +27,7 @@ namespace UnitySpreadsheetSync.Scripts.Data
             string newName = subAssetName + "_" + (highestIndex + 1).ToString("D2");
             T newAsset = CreateInstance<T>();
             newAsset.name = newName;
+#if UNITY_EDITOR
             AssetDatabase.AddObjectToAsset(newAsset, this);
             _list.Add(newAsset);
 
@@ -34,11 +35,11 @@ namespace UnitySpreadsheetSync.Scripts.Data
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
+#endif
             return newAsset;
         }
 
-
+#if UNITY_EDITOR
         private int MaxIndex(string baseName)
         {
             var highestIndex = 0;
